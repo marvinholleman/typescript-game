@@ -10,10 +10,15 @@ var Car = (function () {
 }());
 var Game = (function () {
     function Game() {
-        console.log("new game created!");
-        var c = new Car();
+        var car = new Car();
     }
+    Game.getInstance = function () {
+        if (!Game.instance) {
+            Game.instance = new Game();
+        }
+        return Game.instance;
+    };
     return Game;
 }());
-window.addEventListener("load", function () { return new Game(); });
+window.addEventListener("load", function () { return Game.getInstance(); });
 //# sourceMappingURL=main.js.map
