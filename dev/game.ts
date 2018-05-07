@@ -1,9 +1,14 @@
+/// <reference path="level.ts"/>
+
 class Game {
 
     private static instance: Game;
 
+    private level: Level;
+
     private constructor() {
-        let car = new Car();
+        this.level = new Level();
+        requestAnimationFrame(() => this.gameLoop());
     }
 
     public static getInstance() {
@@ -11,6 +16,11 @@ class Game {
             Game.instance = new Game();
         }
         return Game.instance;
+    }
+
+    private gameLoop() {
+        this.level.update();
+        requestAnimationFrame(() => this.gameLoop());
     }
 }
 
