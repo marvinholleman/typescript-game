@@ -12,7 +12,7 @@ var Car = (function () {
         this.forceX = 10;
         this.sprite = document.createElement("car");
         this.positionX = 100;
-        this.positionY = 300;
+        this.positionY = 500;
         this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px)";
         document.body.appendChild(this.sprite);
         this.jumpBehaviour = new NormalJumpBehaviour(this);
@@ -62,8 +62,8 @@ var Car = (function () {
         this.capVelocityY();
         this.positionX += this.velocityX;
         this.positionY += this.velocityY;
-        if (this.positionY > 300) {
-            this.positionY = 300;
+        if (this.positionY > 500) {
+            this.positionY = 500;
         }
         this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px)";
     };

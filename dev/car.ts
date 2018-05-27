@@ -20,7 +20,7 @@ class Car {
 
         // Set default position.
         this.positionX = 100;
-        this.positionY = 300;
+        this.positionY = 500;
 
         // Place sprite at position.
         this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px)";
@@ -90,8 +90,8 @@ class Car {
         this.positionY += this.velocityY;
 
         // Hardcoded border. This is the floor on which the car drives.
-        if(this.positionY > 300) {
-            this.positionY = 300;
+        if(this.positionY > 500) {
+            this.positionY = 500;
         }
 
         this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px)";
