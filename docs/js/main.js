@@ -1,11 +1,37 @@
 "use strict";
 var Car = (function () {
     function Car() {
-        this.color = 'blue';
-        console.log("vroom!");
-        this.drive();
+        var _this = this;
+        this.velocityX = 0;
+        this.sprite = document.createElement("car");
+        this.positionX = 100;
+        this.positionY = 300;
+        this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px)";
+        document.body.appendChild(this.sprite);
+        document.addEventListener("keydown", function (e) {
+            if (e.keyCode == 37) {
+                _this.drive(-5);
+            }
+            else if (e.keyCode == 39) {
+                _this.drive(5);
+            }
+        });
+        document.addEventListener("keyup", function (e) {
+            if (e.keyCode == 37 || e.keyCode == 39) {
+                _this.brake();
+            }
+        });
     }
-    Car.prototype.drive = function () { };
+    Car.prototype.update = function () {
+        this.positionX += this.velocityX;
+        this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px)";
+    };
+    Car.prototype.drive = function (velocityX) {
+        this.velocityX = velocityX;
+    };
+    Car.prototype.brake = function () {
+        this.velocityX = 0;
+    };
     return Car;
 }());
 var Level = (function () {
@@ -24,9 +50,6 @@ var Level = (function () {
     Level.prototype.update = function () {
         this.x += this.speedX;
         this.front.style.transform = "translate(" + this.x + "px)";
-        if (this.x < -1500) {
-            document.body.removeChild(this.level);
-        }
     };
     return Level;
 }());
@@ -34,6 +57,7 @@ var Game = (function () {
     function Game() {
         var _this = this;
         this.level = new Level();
+        this.car = new Car();
         requestAnimationFrame(function () { return _this.gameLoop(); });
     }
     Game.getInstance = function () {
@@ -44,6 +68,7 @@ var Game = (function () {
     };
     Game.prototype.gameLoop = function () {
         var _this = this;
+        this.car.update();
         this.level.update();
         requestAnimationFrame(function () { return _this.gameLoop(); });
     };
