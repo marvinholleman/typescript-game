@@ -10,6 +10,7 @@ class Game {
     private constructor() {
         this.level = new Level();
         this.car = new Car();
+        this.playAudio();
 
         requestAnimationFrame(() => this.gameLoop());
     }
@@ -19,6 +20,14 @@ class Game {
             Game.instance = new Game();
         }
         return Game.instance;
+    }
+
+    public playAudio() {
+        // Background audio loop
+        const audio = new Audio("../docs/audio/Off-Limits.mp3");
+
+        audio.loop = true;
+        audio.play();
     }
 
     private gameLoop() {

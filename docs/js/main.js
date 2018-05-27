@@ -15,8 +15,10 @@ var Car = (function () {
         this.positionY = 500;
         this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px)";
         document.body.appendChild(this.sprite);
+        var audio = new Audio("../docs/audio/jump.wav");
         this.jumpBehaviour = new NormalJumpBehaviour(this);
         document.addEventListener("keydown", function (e) {
+            console.log(e.keyCode);
             switch (e.keyCode) {
                 case 37:
                     _this.isMovingHorizontal = true;
@@ -35,6 +37,7 @@ var Car = (function () {
                     break;
                 case 38:
                     _this.jumpBehaviour.jump();
+                    audio.play();
                     break;
                 case 39:
                     _this.isMovingHorizontal = false;
@@ -111,6 +114,7 @@ var Game = (function () {
         var _this = this;
         this.level = new Level();
         this.car = new Car();
+        this.playAudio();
         requestAnimationFrame(function () { return _this.gameLoop(); });
     }
     Game.getInstance = function () {
@@ -118,6 +122,11 @@ var Game = (function () {
             Game.instance = new Game();
         }
         return Game.instance;
+    };
+    Game.prototype.playAudio = function () {
+        var audio = new Audio("../docs/audio/Off-Limits.mp3");
+        audio.loop = true;
+        audio.play();
     };
     Game.prototype.gameLoop = function () {
         var _this = this;
