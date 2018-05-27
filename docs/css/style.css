@@ -41,11 +41,17 @@ middleTrees {
     z-index: 1;
 }
 
-
 ground{
     background-color: #282832;
     width: 100%;
     position: absolute;
     top: calc(62.7% - 104px);
     height: 50.5%;
+}
+
+car {
+    width: 283px;
+    height: 144px;
+    background-image: url(../img/car.png);
+    display: block;
 }
