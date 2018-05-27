@@ -3,36 +3,89 @@ var Car = (function () {
     function Car() {
         var _this = this;
         this.velocityX = 0;
+        this.velocityY = 0;
+        this.maxVelocityYUp = -20;
+        this.maxVelocityYDown = 15;
+        this.isMovingHorizontal = false;
+        this.frictionFactorX = 0.95;
+        this.gravity = 1;
+        this.forceX = 10;
         this.sprite = document.createElement("car");
         this.positionX = 100;
         this.positionY = 300;
         this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px)";
         document.body.appendChild(this.sprite);
+        this.jumpBehaviour = new NormalJumpBehaviour(this);
         document.addEventListener("keydown", function (e) {
-            if (e.keyCode == 37) {
-                _this.drive(-5);
-            }
-            else if (e.keyCode == 39) {
-                _this.drive(5);
+            switch (e.keyCode) {
+                case 37:
+                    _this.isMovingHorizontal = true;
+                    _this.velocityX = -_this.forceX;
+                    break;
+                case 39:
+                    _this.isMovingHorizontal = true;
+                    _this.velocityX = _this.forceX;
+                    break;
             }
         });
         document.addEventListener("keyup", function (e) {
-            if (e.keyCode == 37 || e.keyCode == 39) {
-                _this.brake();
+            switch (e.keyCode) {
+                case 37:
+                    _this.isMovingHorizontal = false;
+                    break;
+                case 38:
+                    _this.jumpBehaviour.jump();
+                    break;
+                case 39:
+                    _this.isMovingHorizontal = false;
+                    break;
+                case 79:
+                    _this.jumpBehaviour = new NormalJumpBehaviour(_this);
+                    break;
+                case 80:
+                    _this.jumpBehaviour = new ForwardJumpBehaviour(_this);
+                    break;
             }
         });
     }
+    Car.prototype.addVelocityX = function (amount) {
+        this.velocityX += amount;
+    };
+    Car.prototype.addVelocityY = function (amount) {
+        this.velocityY += amount;
+    };
     Car.prototype.update = function () {
+        if (!this.isMovingHorizontal) {
+            this.velocityX *= this.frictionFactorX;
+        }
+        this.velocityY += this.gravity;
+        this.capVelocityY();
         this.positionX += this.velocityX;
+        this.positionY += this.velocityY;
+        if (this.positionY > 300) {
+            this.positionY = 300;
+        }
         this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px)";
     };
-    Car.prototype.drive = function (velocityX) {
-        this.velocityX = velocityX;
-    };
-    Car.prototype.brake = function () {
-        this.velocityX = 0;
+    Car.prototype.capVelocityY = function () {
+        if (this.velocityY < this.maxVelocityYUp) {
+            this.velocityY = this.maxVelocityYUp;
+        }
+        else if (this.velocityY > this.maxVelocityYDown) {
+            this.velocityY = this.maxVelocityYDown;
+        }
     };
     return Car;
+}());
+var ForwardJumpBehaviour = (function () {
+    function ForwardJumpBehaviour(car) {
+        this.car = car;
+    }
+    ForwardJumpBehaviour.prototype.jump = function () {
+        this.car.addVelocityX(20);
+        this.car.addVelocityY(-80);
+    };
+    return ForwardJumpBehaviour;
 }());
 var Level = (function () {
     function Level() {
@@ -75,4 +128,13 @@ var Game = (function () {
     return Game;
 }());
 window.addEventListener("load", function () { return Game.getInstance(); });
+var NormalJumpBehaviour = (function () {
+    function NormalJumpBehaviour(car) {
+        this.car = car;
+    }
+    NormalJumpBehaviour.prototype.jump = function () {
+        this.car.addVelocityY(-80);
+    };
+    return NormalJumpBehaviour;
+}());
 //# sourceMappingURL=main.js.map
