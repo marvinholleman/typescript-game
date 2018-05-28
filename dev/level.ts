@@ -29,9 +29,12 @@ class Level {
         this.x += this.speedX;
         this.front.style.transform = "translate(" + this.x + "px)";
 
+<<<<<<< HEAD
         if (this.x < -1500) {
             document.body.removeChild(this.front);
         }
+=======
+>>>>>>> c17a7aacec71613d7d4888a2d6dda314c1c241db
 
     }
 }
