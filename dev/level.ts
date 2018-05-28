@@ -5,7 +5,6 @@ class Level {
     private lights: HTMLElement;
 
     private x: number;
-    private y: number;
 
     private speedX: number;
 
@@ -31,7 +30,7 @@ class Level {
         this.front.style.transform = "translate(" + this.x + "px)";
 
         if (this.x < -1500) {
-            document.body.removeChild(this.level);
+            document.body.removeChild(this.front);
         }
 
     }

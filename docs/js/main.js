@@ -25,7 +25,7 @@ var Level = (function () {
         this.x += this.speedX;
         this.front.style.transform = "translate(" + this.x + "px)";
         if (this.x < -1500) {
-            document.body.removeChild(this.level);
+            document.body.removeChild(this.front);
         }
     };
     return Level;
@@ -37,9 +37,8 @@ var Game = (function () {
         requestAnimationFrame(function () { return _this.gameLoop(); });
     }
     Game.getInstance = function () {
-        if (!Game.instance) {
+        if (!Game.instance)
             Game.instance = new Game();
-        }
         return Game.instance;
     };
     Game.prototype.gameLoop = function () {

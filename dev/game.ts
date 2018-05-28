@@ -6,15 +6,15 @@ class Game {
 
     private level: Level;
 
+    //Constructor private, omdat singleton
     private constructor() {
         this.level = new Level();
         requestAnimationFrame(() => this.gameLoop());
     }
 
     public static getInstance() {
-        if (!Game.instance) {
+        if (!Game.instance)
             Game.instance = new Game();
-        }
         return Game.instance;
     }
 
