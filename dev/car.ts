@@ -12,7 +12,7 @@ class Car {
     private frictionFactorX: number = 0.95;
     private gravity: number = 1;
 
-    private forceX:number  = 10;
+    private forceX: number = 10;
     private jumpBehaviour: JumpBehaviour;
 
     constructor() {
@@ -26,12 +26,15 @@ class Car {
         this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px)";
         document.body.appendChild(this.sprite);
 
+        // Add sfx
+        const audio = new Audio("../docs/audio/jump.wav");
+
         this.jumpBehaviour = new NormalJumpBehaviour(this);
 
         // Add key listeners to drive and brake.
         document.addEventListener("keydown", (e) => {
-            // console.log(e.keyCode);
-            
+            console.log(e.keyCode);
+
             switch (e.keyCode) {
                 case 37:
                     this.isMovingHorizontal = true;
@@ -51,6 +54,7 @@ class Car {
                     break;
                 case 38:
                     this.jumpBehaviour.jump();
+                    audio.play();
                     break;
                 case 39:
                     this.isMovingHorizontal = false;
@@ -73,10 +77,10 @@ class Car {
         this.velocityY += amount;
     }
 
-   public update() {
+    public update() {
 
         // When player doesn't give gas x velocity must zero out.
-        if(!this.isMovingHorizontal) {
+        if (!this.isMovingHorizontal) {
             this.velocityX *= this.frictionFactorX;
         }
 
@@ -90,19 +94,19 @@ class Car {
         this.positionY += this.velocityY;
 
         // Hardcoded border. This is the floor on which the car drives.
-        if(this.positionY > 500) {
+        if (this.positionY > 500) {
             this.positionY = 500;
         }
 
         this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px)";
-   }
+    }
 
-   // Make sure y velocity doesn't get too big.
-   private capVelocityY(): void {
-        if(this.velocityY < this.maxVelocityYUp) {
+    // Make sure y velocity doesn't get too big.
+    private capVelocityY(): void {
+        if (this.velocityY < this.maxVelocityYUp) {
             this.velocityY = this.maxVelocityYUp;
         } else if (this.velocityY > this.maxVelocityYDown) {
             this.velocityY = this.maxVelocityYDown;
         }
-   }
+    }
 }
