@@ -7,3 +7,8 @@ Configured basic project. Configs where not okay to clone successfully. Removed 
 Because I couldnt get the project running on my laptop I couldnt add some OO principles. Wasted a lot of time on fixxing the project running on my laptop.
 
 link : https://github.com/jurrianlammerts/Spaceinvaders 
+
+Made a second pull request to show OO principle
+Added sounds in Game and Alien, made them both private because theire only be used in their own class.
+
+link : https://github.com/jurrianlammerts/Spaceinvaders/pull/3

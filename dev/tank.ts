@@ -1,46 +1,75 @@
-class Car {
+class Tank {
     private sprite: HTMLElement;
-    private positionX: number;
-    private positionY: number;
+    public positionX: number;
+    public positionY: number;
+    public side: number;
     private velocityX: number = 0;
     private velocityY: number = 0;
     private maxVelocityYUp: number = -20;
     private maxVelocityYDown: number = 15;
+
+    private minWidth: number = 0;
 
     private isMovingHorizontal: boolean = false;
 
     private frictionFactorX: number = 0.95;
     private gravity: number = 1;
 
-    private forceX:number  = 10;
-    private jumpBehaviour: JumpBehaviour;
+    private forceX: number = 3;
+    //    private ammo: Ammo;
+    private activeWeaponStrategy: WeaponStrategy
 
-    constructor() {
-        this.sprite = document.createElement("car");
+    private rifle: Rifle;
+    private rocketLauncher: RocketLauncher;
 
+    public bullets: Array<Bullet> = [];
+
+    public parent: HTMLElement;
+    private levelWidth: number;
+
+    public showAmmo: boolean = false;
+
+    constructor(parent: HTMLElement, levelWidth: number) {
+        this.sprite = document.createElement("tank");
         // Set default position.
-        this.positionX = 100;
-        this.positionY = 500;
+        this.levelWidth = levelWidth;
+        this.positionX = levelWidth / 2;
+        this.positionY = 200;
 
+        this.side = 1;
+
+
+        this.parent = parent;
         // Place sprite at position.
         this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px)";
-        document.body.appendChild(this.sprite);
+        parent.appendChild(this.sprite);
+        this.sprite.classList.add('tank')
 
-        this.jumpBehaviour = new NormalJumpBehaviour(this);
+
+
+        //  this.ammo = new Bullet(this.positionX, this.positionY, this.parent, this.side, this);
+
+        this.rifle = new Rifle(this, this.parent, this.side);
+        this.rocketLauncher = new RocketLauncher(this, this.parent, this.side);
+
+
+        this.activeWeaponStrategy = this.rifle;
+
 
         // Add key listeners to drive and brake.
         document.addEventListener("keydown", (e) => {
-            // console.log(e.keyCode);
-            
             switch (e.keyCode) {
                 case 37:
                     this.isMovingHorizontal = true;
                     this.velocityX = -this.forceX;
+                    this.side = -1
                     break;
                 case 39:
                     this.isMovingHorizontal = true;
                     this.velocityX = this.forceX;
+                    this.side = 1
                     break;
+
             }
         });
 
@@ -49,17 +78,20 @@ class Car {
                 case 37:
                     this.isMovingHorizontal = false;
                     break;
-                case 38:
-                    this.jumpBehaviour.jump();
+                case 32:
+                    this.activeWeaponStrategy.fire(this.side);
+                    //this.ammo = new Bullet(this.positionX, this.positionY, this.parent, this.side, this);
+                    //this.bullets.push(new Bullet(this.positionX, this.positionY, this.parent, this.side, this));
                     break;
                 case 39:
                     this.isMovingHorizontal = false;
                     break;
                 case 79:
-                    this.jumpBehaviour = new NormalJumpBehaviour(this);
+                    this.activeWeaponStrategy = this.rifle;
+
                     break;
                 case 80:
-                    this.jumpBehaviour = new ForwardJumpBehaviour(this);
+                    this.activeWeaponStrategy = this.rocketLauncher;
                     break;
             }
         });
@@ -73,10 +105,15 @@ class Car {
         this.velocityY += amount;
     }
 
-   public update() {
+    public update(maxWidth: number) {
 
+        if (this.positionX > maxWidth) {
+            this.positionX = this.minWidth;
+        } else if (this.positionX < this.minWidth) {
+            this.positionX = maxWidth;
+        }
         // When player doesn't give gas x velocity must zero out.
-        if(!this.isMovingHorizontal) {
+        if (!this.isMovingHorizontal) {
             this.velocityX *= this.frictionFactorX;
         }
 
@@ -90,19 +127,19 @@ class Car {
         this.positionY += this.velocityY;
 
         // Hardcoded border. This is the floor on which the car drives.
-        if(this.positionY > 500) {
-            this.positionY = 500;
+        if (this.positionY > 0) {
+            this.positionY = 0;
         }
 
-        this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px)";
-   }
+        this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px) scaleX(" + this.side + ") ";
+    }
 
-   // Make sure y velocity doesn't get too big.
-   private capVelocityY(): void {
-        if(this.velocityY < this.maxVelocityYUp) {
+    // Make sure y velocity doesn't get too big.
+    private capVelocityY(): void {
+        if (this.velocityY < this.maxVelocityYUp) {
             this.velocityY = this.maxVelocityYUp;
         } else if (this.velocityY > this.maxVelocityYDown) {
             this.velocityY = this.maxVelocityYDown;
         }
-   }
+    }
 }

@@ -1,40 +1,57 @@
+
 class Level {
-    private front: HTMLElement;
-    private middle: HTMLElement;
-    private ground: HTMLElement;
-    private lights: HTMLElement;
 
-    private x: number;
+    public width: number;
+    public height: number;
+    public level: HTMLElement;
+    public ground: HTMLElement;
+    private tank: Tank;
 
-    private speedX: number;
+    public soldier: Soldier;
+    private soldiers: Array<Soldier> = new Array<Soldier>();
+    public createSoldiers: number;
+    private soldierPositions: Array<number>
+
+    public bullet: Bullet;
+    public rocket: RocketBullet;
 
     constructor() {
-        this.front = document.createElement("frontTrees");
-        document.body.appendChild(this.front);
+        this.width = self.innerWidth - 110;
+        this.height = self.innerHeight;
+        this.level = document.createElement('level');
+        this.ground = document.createElement('ground')
+        this.level.classList.add('level')
+        document.body.appendChild(this.level)
+        this.level.appendChild(this.ground)
+        this.tank = new Tank(this.level, this.width);
 
-        this.middle = document.createElement("middleTrees")
-        document.body.appendChild(this.middle);
-
-        this.lights = document.createElement("lights");
-        document.body.appendChild(this.lights);
-
-        this.ground = document.createElement("ground");
-        document.body.appendChild(this.ground);
-
-        this.x = -1;
-        this.speedX = -2;
+        this.createSoldiers = setInterval(() => this.createSoldier(), 2000);
+        this.soldierPositions = [0, this.width];
     }
 
-    public update(): void {
-        this.x += this.speedX;
-        this.front.style.transform = "translate(" + this.x + "px)";
+    public createSoldier() {
+        this.soldierPositions.map((position) => {
+            this.soldiers.push(new Soldier(this.level, position, this.width));
+        });
 
-<<<<<<< HEAD
-        if (this.x < -1500) {
-            document.body.removeChild(this.front);
-        }
-=======
->>>>>>> c17a7aacec71613d7d4888a2d6dda314c1c241db
-
+        if (this.soldiers.length > 10) clearInterval(this.createSoldiers);
     }
+
+    public update() {
+        this.tank.update(this.width);
+        this.soldiers.forEach(Soldier => Soldier.move());
+
+        this.tank.bullets.forEach((bullet, j) => {
+            bullet.move(this.width + 85, this.height);
+            this.soldiers.forEach((Soldier, i) => {
+                if (bullet.hitsEnemy(Soldier)) {
+                    this.tank.bullets.splice(j, 1);
+                    this.soldiers.splice(i, 1)
+                    Soldier.remove();
+                    bullet.remove();
+                }
+            });
+        });
+    }
+
 }

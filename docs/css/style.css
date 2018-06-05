@@ -1,57 +1,73 @@
 body, html {
     margin:0; padding:0;
     width:100%; height:100%;
-    background-image: url(../img/parallax-forest-back-trees.png);
-    background-repeat: repeat-x; 
-    background-size: 41%;
+    background-color: #282832;
+      max-height: 690px!important;
 }
 
 * { width:100%; height:100%;
     box-sizing: border-box;
 }
 
-lights{
-    background-image: url(../img/parallax-forest-lights.png);
-    overflow: hidden;
-    background-repeat: repeat-x; 
-    height: 100%;
-    background-size: 35%;
+level{
+    max-height: 960px!important;
     position: absolute;
 }
 
-frontTrees {
-    background: url(../img/parallax-forest-front-trees.png);
-    overflow: hidden;
-    background-repeat: repeat-x; 
+body bullet:first-child{ display:none!important; }
+
+tank {
+    width: 102px;
+    height: 100px;
+    background-image: url(../img/tank.svg);
+    background-repeat: no-repeat;
+    display: block;
+    background-size: 100%;
+    z-index: 9999;
     position: absolute;
-    height: 100%;
-    width: 100%;
-    background-size: 47%;
-    z-index: 2;
+    bottom: 20px;
 }
 
-middleTrees {
-    background: url(../img/parallax-forest-middle-trees.png);
-    overflow: hidden;
-    background-repeat: repeat-x; 
+bullet {
+    width: 10px;
+    height: 2px;
+    background-color:#FFC107;
+    display: block;
+    background-size: 100%;
+    z-index: 9999;
     position: absolute;
-    height: 100%;
-    width: 100%;
-    background-size: 47%;
-    z-index: 1;
+    bottom: 25px;
+}
+
+rocket {
+    width: 25px;
+    height: 25px;
+    background-image: url(../img/bullet.png);
+    display: block;
+    background-size: 100%;
+    z-index: 9999;
+    position: absolute;
+    bottom: 25px;
+    
+}
+
+
+soldier {
+    background-image: url(../img/soldier-sword.png);
+    display: block;
+    z-index: 9999;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    bottom: 60px;
 }
 
 ground{
-    background-color: #282832;
-    width: 100%;
+    background-color:grey;
+    height:80px;
+    bottom: 0;
     position: absolute;
-    top: calc(62.7% - 104px);
-    height: 50.5%;
 }
 
-car {
-    width: 283px;
-    height: 144px;
-    background-image: url(../img/car.png);
-    display: block;
-}

@@ -4,14 +4,12 @@ class Game {
 
     private static instance: Game;
 
-    private level: Level;
-    private car: Car;
+    public level: Level;
+    public soldier: Soldier;
 
     //Constructor private, omdat singleton
     private constructor() {
         this.level = new Level();
-        this.car = new Car();
-
         requestAnimationFrame(() => this.gameLoop());
     }
 
@@ -22,11 +20,11 @@ class Game {
     }
 
     private gameLoop() {
-        this.car.update();
         this.level.update();
-
         requestAnimationFrame(() => this.gameLoop());
     }
 }
+
+
 
 window.addEventListener("load", () => Game.getInstance());
