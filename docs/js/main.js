@@ -57,6 +57,8 @@ var Bullet = (function (_super) {
 var Level = (function () {
     function Level() {
         var _this = this;
+        this.itemSpeedY = 20;
+        this.powerUps = [];
         this.soldiers = new Array();
         this.width = self.innerWidth - 110;
         this.height = self.innerHeight;
@@ -68,6 +70,7 @@ var Level = (function () {
         this.tank = new Tank(this.level, this.width);
         this.createSoldiers = setInterval(function () { return _this.createSoldier(); }, 2000);
         this.soldierPositions = [0, this.width];
+        this.dropItems();
     }
     Level.prototype.createSoldier = function () {
         var _this = this;
@@ -81,6 +84,7 @@ var Level = (function () {
         var _this = this;
         this.tank.update(this.width);
         this.soldiers.forEach(function (Soldier) { return Soldier.move(); });
+        this.powerUps.forEach(function (powerUp, i) { _this.fallItem(powerUp); });
         this.tank.bullets.forEach(function (bullet, j) {
             bullet.move(_this.width + 85, _this.height);
             _this.soldiers.forEach(function (Soldier, i) {
@@ -92,6 +96,23 @@ var Level = (function () {
                 }
             });
         });
+    };
+    Level.prototype.dropItems = function () {
+        var _this = this;
+        setInterval(function () {
+            _this.gasPowerUp = document.createElement('gasPowerUp');
+            _this.level.appendChild(_this.gasPowerUp);
+            _this.powerUps.push(_this.gasPowerUp);
+        }, 8000);
+    };
+    Level.prototype.fallItem = function (powerUp) {
+        this.itemPosX = 500;
+        this.itemPosY = 3;
+        this.itemPosY += this.itemSpeedY;
+        this.gasPowerUp.style.transform = "translate(" + this.itemPosX + "px, " + this.itemPosY + "px)";
+    };
+    Level.prototype.reFillGas = function () {
+        this.tank.gasBarWidth = 80;
     };
     return Level;
 }());
@@ -223,6 +244,7 @@ var Soldier = (function () {
 var Tank = (function () {
     function Tank(parent, levelWidth) {
         var _this = this;
+        this.gasBarWidth = 80;
         this.velocityX = 0;
         this.velocityY = 0;
         this.maxVelocityYUp = -20;
@@ -235,6 +257,7 @@ var Tank = (function () {
         this.bullets = [];
         this.showAmmo = false;
         this.sprite = document.createElement("tank");
+        this.gasBar = document.createElement("gasBar");
         this.levelWidth = levelWidth;
         this.positionX = levelWidth / 2;
         this.positionY = 200;
@@ -242,7 +265,15 @@ var Tank = (function () {
         this.parent = parent;
         this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px)";
         parent.appendChild(this.sprite);
+        this.sprite.appendChild(this.gasBar);
         this.sprite.classList.add('tank');
+        setInterval(function () {
+            if (_this.gasBarWidth > 1) {
+                console.log('mined');
+                _this.gasBarWidth--;
+                _this.gasBar.style.width = _this.gasBarWidth + 'px';
+            }
+        }, 1000);
         this.rifle = new Rifle(this, this.parent, this.side);
         this.rocketLauncher = new RocketLauncher(this, this.parent, this.side);
         this.activeWeaponStrategy = this.rifle;
@@ -266,7 +297,13 @@ var Tank = (function () {
                     _this.isMovingHorizontal = false;
                     break;
                 case 32:
-                    _this.activeWeaponStrategy.fire(_this.side);
+                    if (_this.bullets.length > 0) {
+                        console.log('cant fire');
+                    }
+                    else {
+                        _this.activeWeaponStrategy.fire(_this.side);
+                    }
+                    _this.addNewGas();
                     break;
                 case 39:
                     _this.isMovingHorizontal = false;

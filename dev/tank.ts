@@ -1,5 +1,9 @@
 class Tank {
     private sprite: HTMLElement;
+    private gasBar: HTMLElement;
+
+    public gasBarWidth: number = 80;
+
     public positionX: number;
     public positionY: number;
     public side: number;
@@ -31,30 +35,29 @@ class Tank {
 
     constructor(parent: HTMLElement, levelWidth: number) {
         this.sprite = document.createElement("tank");
+        this.gasBar = document.createElement("gasBar")
         // Set default position.
         this.levelWidth = levelWidth;
         this.positionX = levelWidth / 2;
         this.positionY = 200;
-
         this.side = 1;
-
-
         this.parent = parent;
-        // Place sprite at position.
+        // Place sprites at position.
         this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px)";
         parent.appendChild(this.sprite);
+        this.sprite.appendChild(this.gasBar);
         this.sprite.classList.add('tank')
-
-
-
-        //  this.ammo = new Bullet(this.positionX, this.positionY, this.parent, this.side, this);
+        setInterval(() => {
+            if (this.gasBarWidth > 1) {
+                console.log('mined')
+                this.gasBarWidth--;
+                this.gasBar.style.width = this.gasBarWidth + 'px';
+            }
+        }, 1000);
 
         this.rifle = new Rifle(this, this.parent, this.side);
         this.rocketLauncher = new RocketLauncher(this, this.parent, this.side);
-
-
         this.activeWeaponStrategy = this.rifle;
-
 
         // Add key listeners to drive and brake.
         document.addEventListener("keydown", (e) => {
@@ -79,7 +82,12 @@ class Tank {
                     this.isMovingHorizontal = false;
                     break;
                 case 32:
-                    this.activeWeaponStrategy.fire(this.side);
+                    if (this.bullets.length > 0) {
+                        console.log('cant fire');
+                    } else {
+                        this.activeWeaponStrategy.fire(this.side);
+                    }
+                    this.addNewGas();
                     //this.ammo = new Bullet(this.positionX, this.positionY, this.parent, this.side, this);
                     //this.bullets.push(new Bullet(this.positionX, this.positionY, this.parent, this.side, this));
                     break;
@@ -142,4 +150,7 @@ class Tank {
             this.velocityY = this.maxVelocityYDown;
         }
     }
+
+
+
 }
