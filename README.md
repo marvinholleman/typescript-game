@@ -12,3 +12,12 @@ Made a second pull request to show OO principle
 Added sounds in Game and Alien, made them both private because theire only be used in their own class.
 
 link : https://github.com/jurrianlammerts/Spaceinvaders/pull/3
+
+# Peer review
+I'm making the peer review for Jurrian again, because where doing it with three, Joey gives me a review, I do Jurrian and Jurrian does Joey. 
+
+I see al the OOP principles back in the game, except for the Observer pattern. I think that is because it was last week we had the lesson about the Observer. 
+
+Link : https://github.com/jurrianlammerts/Spaceinvaders/issues/4
+
+
