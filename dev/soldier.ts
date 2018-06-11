@@ -13,11 +13,12 @@ class Soldier {
     public height: number;
     private levelWidth: number;
     public minWidth: number = 0;
+    private tank: Tank;
 
     constructor(parent: HTMLElement, position: number, levelWidth: number) {
         this.soldier = document.createElement("soldier");
         parent.appendChild(this.soldier);
-        this.width = 80;
+        this.width = 20;
         this.height = 30;
         this.side = 1;
         this.x = Math.round(Math.random() * 5) * 120;
@@ -49,6 +50,14 @@ class Soldier {
             this.speedX *= -1;
         }
         this.soldier.style.transform = `translate(${this.x}px, ${this.y}px) scaleX(${this.side})`
+    }
+
+    public hitsTank(tank: Tank) {
+        if (tank.positionX < this.x + this.width &&
+            tank.positionX + this.width > this.x) {
+            tank.reduceHealth();
+            this.remove();
+        }
     }
 
     public remove(): void {

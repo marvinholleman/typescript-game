@@ -9,12 +9,22 @@ body, html {
     box-sizing: border-box;
 }
 
+startScreen{
+    color:#f7f7f7;
+    background-color:black;
+    font-size: 23px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+}
+
 level{
     max-height: 960px!important;
     position: absolute;
 }
 
-body bullet:first-child{ display:none!important; }
 
 tank {
     width: 102px;
@@ -38,7 +48,20 @@ gasBar {
     display: block;
     background-size: 20px;
     z-index: 9999;
-    margin-top: -25px;
+    margin-top: -45px;
+    margin-left: 15px;
+
+}
+
+healthBar {
+    width: 80px;
+    height: 20px;
+    background-color:green;
+    background-repeat: no-repeat;
+    display: block;
+    background-size: 20px;
+    z-index: 9999;
+    margin-top: 2px;
     margin-left: 15px;
 
 }
@@ -66,6 +89,14 @@ bullet {
     bottom: 25px;
 }
 
+
+bulletCount {
+    font-size:20px;
+    color:#f7f7f7;
+    margin: 50px 0px 0px 30px;
+    position: fixed
+}
+
 rocket {
     width: 25px;
     height: 25px;
@@ -76,6 +107,13 @@ rocket {
     position: absolute;
     bottom: 25px;
     
+}
+
+rocketCount {
+    font-size:20px;
+    color:#f7f7f7;
+    margin: 100px 0px 0px 30px;
+    position: fixed;
 }
 
 
@@ -96,5 +134,27 @@ ground{
     height:80px;
     bottom: 0;
     position: absolute;
+}
+
+.key{
+    width: 19%;
+    height: 24%;
+}
+.key-p{
+    width: 13%;
+    height: 14.5%;
+}
+.space-key{
+    width: 24%;
+    height: 12%;
+}
+
+.start-text{
+    flex: 1;
+    margin-top: 10%;
+}
+
+.control-text{
+    color:gray;
 }
 

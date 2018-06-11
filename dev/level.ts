@@ -8,22 +8,28 @@ class Level {
     private tank: Tank;
 
     public gasPowerUp: HTMLElement;
-    private itemPosX: number;
-    private itemPosY: number;
-    private itemSpeedY: number = 20;
+    public itemPosX: number;
+    private itemPosY: number = 23;
+    private itemSpeedY: number = 2;
 
-    private powerUps: Array<HTMLElement> = [];
-
+    public powerUps: Array<PowerUp> = [];
 
     public soldier: Soldier;
     private soldiers: Array<Soldier> = new Array<Soldier>();
     public createSoldiers: number;
     private soldierPositions: Array<number>
 
-
-
     public bullet: Bullet;
     public rocket: RocketBullet;
+
+    public rifle: Rifle;
+    public rocketLauncher: RocketLauncher;
+
+    public rockets: HTMLElement;
+    public bullets: HTMLElement;
+
+    public bulletCount: number = 30;
+    public rocketCount: number;
 
     constructor() {
         this.width = self.innerWidth - 110;
@@ -33,14 +39,20 @@ class Level {
         this.level.classList.add('level')
         document.body.appendChild(this.level)
         this.level.appendChild(this.ground)
-        this.tank = new Tank(this.level, this.width);
 
+        this.rockets = document.createElement('rocketCount');
+        this.bullets = document.createElement('bulletCount');
+        this.level.appendChild(this.rockets);
+        this.level.appendChild(this.bullets);
+
+        document.getElementsByTagName('bulletCount')[0].innerHTML = "Bullets 30";
+        document.getElementsByTagName('rocketCount')[0].innerHTML = "Rockets 15";
+
+        this.tank = new Tank(this.level, this.width);
         this.createSoldiers = setInterval(() => this.createSoldier(), 2000);
         this.soldierPositions = [0, this.width];
 
         this.dropItems();
-
-
     }
 
     public createSoldier() {
@@ -48,21 +60,30 @@ class Level {
             this.soldiers.push(new Soldier(this.level, position, this.width));
         });
 
-        if (this.soldiers.length > 10) clearInterval(this.createSoldiers);
+        if (this.soldiers.length > 50) clearInterval(this.createSoldiers);
     }
 
     public update() {
         this.tank.update(this.width);
         this.soldiers.forEach(Soldier => Soldier.move());
-        this.powerUps.forEach((powerUp, i) => { this.fallItem(powerUp) });
+        this.powerUps.forEach((powerUp, p) => {
+            powerUp.move(this.height);
+            if (powerUp.hitsTank(this.tank.positionX)) {
+                this.tank.refillGas();
+                this.powerUps.splice(p, 1)
+                powerUp.remove();
+            }
+        });
+
+        this.soldiers.forEach((soldier, i) => { soldier.hitsTank(this.tank) });
 
         this.tank.bullets.forEach((bullet, j) => {
             bullet.move(this.width + 85, this.height);
-            this.soldiers.forEach((Soldier, i) => {
-                if (bullet.hitsEnemy(Soldier)) {
+            this.soldiers.forEach((soldier, i) => {
+                if (bullet.hitsEnemy(soldier)) {
                     this.tank.bullets.splice(j, 1);
                     this.soldiers.splice(i, 1)
-                    Soldier.remove();
+                    soldier.remove();
                     bullet.remove();
                 }
             });
@@ -70,24 +91,8 @@ class Level {
     }
 
     private dropItems() {
-
         setInterval(() => {
-            this.gasPowerUp = document.createElement('gasPowerUp');
-            this.level.appendChild(this.gasPowerUp)
-            this.powerUps.push(this.gasPowerUp);
-        }, 8000);
+            this.powerUps.push(new PowerUp(this.level));
+        }, 50000);
     }
-
-    private fallItem(powerUp: HTMLElement) {
-        this.itemPosX = 500;
-        this.itemPosY = 3;
-
-        this.itemPosY += this.itemSpeedY;
-        this.gasPowerUp.style.transform = `translate(${this.itemPosX}px, ${this.itemPosY}px)`;
-    }
-
-    private reFillGas() {
-        this.tank.gasBarWidth = 80;
-    }
-
 }

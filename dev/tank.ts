@@ -1,8 +1,15 @@
 class Tank {
     private sprite: HTMLElement;
     private gasBar: HTMLElement;
+    public healthBar: HTMLElement;
 
     public gasBarWidth: number = 80;
+    public healthBarWidth: number = 80;
+
+    private level: Level;
+    public bullet: Bullet;
+
+    public gasPowerUp: PowerUp;
 
     public positionX: number;
     public positionY: number;
@@ -20,7 +27,6 @@ class Tank {
     private gravity: number = 1;
 
     private forceX: number = 3;
-    //    private ammo: Ammo;
     private activeWeaponStrategy: WeaponStrategy
 
     private rifle: Rifle;
@@ -36,16 +42,16 @@ class Tank {
     constructor(parent: HTMLElement, levelWidth: number) {
         this.sprite = document.createElement("tank");
         this.gasBar = document.createElement("gasBar")
-        // Set default position.
+        this.healthBar = document.createElement("healthBar")
         this.levelWidth = levelWidth;
         this.positionX = levelWidth / 2;
         this.positionY = 200;
         this.side = 1;
         this.parent = parent;
-        // Place sprites at position.
         this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px)";
         parent.appendChild(this.sprite);
         this.sprite.appendChild(this.gasBar);
+        this.sprite.appendChild(this.healthBar);
         this.sprite.classList.add('tank')
         setInterval(() => {
             if (this.gasBarWidth > 1) {
@@ -82,21 +88,13 @@ class Tank {
                     this.isMovingHorizontal = false;
                     break;
                 case 32:
-                    if (this.bullets.length > 0) {
-                        console.log('cant fire');
-                    } else {
-                        this.activeWeaponStrategy.fire(this.side);
-                    }
-                    this.addNewGas();
-                    //this.ammo = new Bullet(this.positionX, this.positionY, this.parent, this.side, this);
-                    //this.bullets.push(new Bullet(this.positionX, this.positionY, this.parent, this.side, this));
+                    this.activeWeaponStrategy.fire(this.side);
                     break;
                 case 39:
                     this.isMovingHorizontal = false;
                     break;
                 case 79:
                     this.activeWeaponStrategy = this.rifle;
-
                     break;
                 case 80:
                     this.activeWeaponStrategy = this.rocketLauncher;
@@ -152,5 +150,14 @@ class Tank {
     }
 
 
+    public refillGas() {
+        console.log('refilled');
+        this.gasBarWidth = 80;
+    }
+
+    public reduceHealth() {
+        this.healthBarWidth--;
+        this.healthBar.style.width = this.healthBarWidth + 'px';
+    }
 
 }
