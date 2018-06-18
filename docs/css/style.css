@@ -11,7 +11,7 @@ body, html {
 
 startScreen{
     color:#f7f7f7;
-    background-color:black;
+    background-color:#282832;
     font-size: 23px;
     display: flex;
     align-items: center;
@@ -66,6 +66,19 @@ healthBar {
 
 }
 
+soldierHealthBar {
+    width: 40px;
+    height: 10px;
+    background-color:green;
+    background-repeat: no-repeat;
+    display: block;
+    background-size: 20px;
+    z-index: 9999;
+    margin-top: -10px;
+    margin-left: 0px;
+
+}
+
 gasPowerUp {
     width: 50px;
     height: 50px;
@@ -76,6 +89,16 @@ gasPowerUp {
     background-size: 40px;
     z-index: 9999;
 
+}
+
+nuke {
+    width: 300px;
+    height: 400px;
+    background-image: url(../img/nuke.png);
+    background-repeat: no-repeat;
+    display: block;
+    background-size: 200px;
+    z-index: 9999;
 }
 
 bullet {

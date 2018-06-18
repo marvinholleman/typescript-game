@@ -18,5 +18,8 @@ class Rifle implements WeaponStrategy {
     public fire(side: number): void {
         this.tank.bullets.push(new RifleBullet(this.tank.positionX, this.tank.positionY, this.parent, side, this.tank))
         document.getElementsByTagName('bulletCount')[0].innerHTML = "Bullets " + this.bulletCounter--;
+        if (this.bulletCounter < 1) {
+            this.level.bulletCount = 0;
+        }
     }
 }

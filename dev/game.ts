@@ -6,12 +6,10 @@ class Game {
 
     public level: Level;
     public soldier: Soldier;
-
     private gameStart: boolean = false;
     private startScreen: HTMLElement;
 
-    //Constructor private, omdat singleton
-    private constructor() {
+    constructor() {
         this.startScreen = document.createElement('startScreen');
         document.body.appendChild(this.startScreen);
         this.startScreen.innerHTML = '<p class="start-text">Press any key to start game</p><p class="control-text">Use arrow keys to drive<br/><img class="key" src="../docs/img/arrows.png"/><br/>Switch between weapons with O & P <br/> & <br/>Fire with space<br/><img class="key-p" src="../docs/img/p-o.png""/><br/><img class="space-key" src="../docs/img/space-key.png""/>';

@@ -39,6 +39,7 @@ class Bullet extends AmmoObject {
     }
 
     public hitsEnemy(soldier: Soldier): boolean {
+
         return (this.x < soldier.x + soldier.width &&
             this.x + this.width > soldier.x &&
             this.y < soldier.y + soldier.height);

@@ -1,4 +1,7 @@
-class Tank {
+class Tank implements Observer {
+
+    public atomBomb: Subject;
+
     private sprite: HTMLElement;
     private gasBar: HTMLElement;
     public healthBar: HTMLElement;
@@ -39,7 +42,10 @@ class Tank {
 
     public showAmmo: boolean = false;
 
-    constructor(parent: HTMLElement, levelWidth: number) {
+    constructor(parent: HTMLElement, levelWidth: number, atomBomb: Subject) {
+        this.atomBomb = atomBomb;
+        this.atomBomb.subscribe(this);
+
         this.sprite = document.createElement("tank");
         this.gasBar = document.createElement("gasBar")
         this.healthBar = document.createElement("healthBar")
@@ -103,6 +109,13 @@ class Tank {
         });
     }
 
+    notify(p: string) {
+        // this.healthBarWidth = this.healthBarWidth / 1;
+        // this.healthBar.style.width = this.healthBarWidth + 'px';
+        this.reduceHealth(1.2);
+        console.log('atom dropped on tank');
+    }
+
     public addVelocityX(amount: number) {
         this.velocityX += amount;
     }
@@ -155,8 +168,9 @@ class Tank {
         this.gasBarWidth = 80;
     }
 
-    public reduceHealth() {
-        this.healthBarWidth--;
+    public reduceHealth(hit: number) {
+        console.log(hit);
+        this.healthBarWidth = this.healthBarWidth / hit;
         this.healthBar.style.width = this.healthBarWidth + 'px';
     }
 
