@@ -112,6 +112,7 @@ var Level = (function () {
             return;
         }
         else {
+            console.log(this.bulletCount);
             if (this.tank.healthBarWidth < 5 || this.tank.gasBarWidth < 5 || this.bulletCount < 1 || this.rocketCount < 1)
                 this.gameOver();
             this.tank.update(this.width);
@@ -174,6 +175,7 @@ var Game = (function () {
     function Game() {
         var _this = this;
         this.gameStart = false;
+        this.gameSound = new Audio('../docs/sounds/music.ogg');
         this.startScreen = document.createElement('startScreen');
         document.body.appendChild(this.startScreen);
         this.startScreen.innerHTML = '<p class="start-text">Press any key to start game</p><p class="control-text">Use arrow keys to drive<br/><img class="key" src="../docs/img/arrows.png"/><br/>Switch between weapons with O & P <br/> & <br/>Fire with space<br/><img class="key-p" src="../docs/img/p-o.png""/><br/><img class="space-key" src="../docs/img/space-key.png""/>';
@@ -183,6 +185,8 @@ var Game = (function () {
                 _this.gameLoop();
                 _this.gameStart = true;
                 _this.removeStartScreen();
+                _this.gameSound.loop = true;
+                _this.gameSound.play();
             }
         };
     }
@@ -216,8 +220,10 @@ var Nuke = (function () {
         this.nuke.style.transform = "translate(" + this.itemPosX + "px, " + this.itemPosY + "px)";
     };
     Nuke.prototype.hitsGround = function (height) {
+        this.explosion = new Audio('../docs/sounds/DeathFlash.flac');
         if (this.itemPosY > height - 400) {
             this.remove();
+            this.explosion.play();
             return true;
         }
         return false;
@@ -257,6 +263,7 @@ var Rifle = (function () {
     function Rifle(tank, parent, side) {
         this.bulletCounter = 29;
         this.bullets = [];
+        this.fireSound = new Audio('../docs/sounds/fire.flac');
         this.tank = tank;
         this.parent = parent;
         this.side = side;
@@ -264,8 +271,10 @@ var Rifle = (function () {
     Rifle.prototype.fire = function (side) {
         this.tank.bullets.push(new RifleBullet(this.tank.positionX, this.tank.positionY, this.parent, side, this.tank));
         document.getElementsByTagName('bulletCount')[0].innerHTML = "Bullets " + this.bulletCounter--;
-        if (this.bulletCounter < 1) {
-            this.level.bulletCount = 0;
+        this.fireSound.play();
+        if (this.bulletCounter < 0) {
+            alert('GAME OVER');
+            location.reload();
         }
     };
     return Rifle;
@@ -319,6 +328,11 @@ var RocketLauncher = (function () {
     RocketLauncher.prototype.fire = function (side) {
         this.tank.bullets.push(new RocketBullet(this.tank.positionX, this.tank.positionY, this.parent, side, this.tank));
         document.getElementsByTagName('rocketCount')[0].innerHTML = "Rockets " + this.rocketBulletCounter--;
+        if (this.rocketBulletCounter < 0) {
+            console.log('out of bullets');
+            alert('GAME OVER');
+            location.reload();
+        }
     };
     return RocketLauncher;
 }());
@@ -328,6 +342,7 @@ var Soldier = (function () {
         this.healtBarWidth = 40;
         this.speedX = 0.3;
         this.minWidth = 0;
+        this.dieSound = new Audio('../docs/sounds/aargh0.ogg');
         this.atomBomb = atomBomb;
         this.atomBomb.subscribe(this);
         this.soldier = document.createElement("soldier");
@@ -390,6 +405,7 @@ var Soldier = (function () {
         if (this.healtBarWidth == 5) {
             console.log('outofHealth');
             this.remove();
+            this.dieSound.play();
             return true;
         }
         return false;

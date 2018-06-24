@@ -9,6 +9,8 @@ class Game {
     private gameStart: boolean = false;
     private startScreen: HTMLElement;
 
+    private gameSound: Sound = new Audio('../docs/sounds/music.ogg');
+
     constructor() {
         this.startScreen = document.createElement('startScreen');
         document.body.appendChild(this.startScreen);
@@ -19,6 +21,8 @@ class Game {
                 this.gameLoop();
                 this.gameStart = true;
                 this.removeStartScreen();
+                this.gameSound.loop = true;
+                this.gameSound.play();
             }
         }
     }

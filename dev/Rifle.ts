@@ -9,6 +9,8 @@ class Rifle implements WeaponStrategy {
 
     public bullets: Array<Bullet> = [];
 
+    private fireSound: Sound = new Audio('../docs/sounds/fire.flac');
+
     constructor(tank: Tank, parent: HTMLElement, side: number) {
         this.tank = tank;
         this.parent = parent;
@@ -18,8 +20,10 @@ class Rifle implements WeaponStrategy {
     public fire(side: number): void {
         this.tank.bullets.push(new RifleBullet(this.tank.positionX, this.tank.positionY, this.parent, side, this.tank))
         document.getElementsByTagName('bulletCount')[0].innerHTML = "Bullets " + this.bulletCounter--;
-        if (this.bulletCounter < 1) {
-            this.level.bulletCount = 0;
+        this.fireSound.play();
+        if (this.bulletCounter < 0) {
+            alert('GAME OVER');
+            location.reload();
         }
     }
 }

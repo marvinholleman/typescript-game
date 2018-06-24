@@ -6,6 +6,8 @@ class RocketLauncher implements WeaponStrategy {
     public rockets: Array<RocketBullet> = [];
     public rocketBulletCounter: number = 14;
 
+    private level: Level;
+
     constructor(tank: Tank, parent: HTMLElement, side: number) {
         this.tank = tank;
         this.parent = parent;
@@ -15,5 +17,10 @@ class RocketLauncher implements WeaponStrategy {
     public fire(side: number): void {
         this.tank.bullets.push(new RocketBullet(this.tank.positionX, this.tank.positionY, this.parent, side, this.tank))
         document.getElementsByTagName('rocketCount')[0].innerHTML = "Rockets " + this.rocketBulletCounter--;
+        if (this.rocketBulletCounter < 0) {
+            console.log('out of bullets');
+            alert('GAME OVER');
+            location.reload();
+        }
     }
 }

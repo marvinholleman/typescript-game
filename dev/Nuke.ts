@@ -6,6 +6,8 @@ class Nuke {
     private itemSpeedY: number = 2;
     private itemWidth: number = 40;
 
+    private explosion: Sound;
+
     constructor(parent: HTMLElement) {
         this.nuke = document.createElement('nuke');
         parent.appendChild(this.nuke)
@@ -19,8 +21,11 @@ class Nuke {
     }
 
     public hitsGround(height: number): boolean {
+        this.explosion = new Audio('../docs/sounds/DeathFlash.flac');
+
         if (this.itemPosY > height - 400) {
             this.remove();
+            this.explosion.play();
             return true;
         }
         return false;

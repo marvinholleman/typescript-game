@@ -64,6 +64,7 @@ class Level {
         if (this.stoppedGame) {
             return;
         } else {
+            console.log(this.bulletCount);
             if (this.tank.healthBarWidth < 5 || this.tank.gasBarWidth < 5 || this.bulletCount < 1 || this.rocketCount < 1) this.gameOver();
             this.tank.update(this.width);
             this.nukes.forEach((nuke, n) => {
@@ -111,7 +112,7 @@ class Level {
         }, 20000);
     }
 
-    private gameOver() {
+    public gameOver() {
         while (this.level.hasChildNodes()) {
             this.level.removeChild(this.level.lastChild);
         }

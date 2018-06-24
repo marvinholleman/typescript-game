@@ -18,6 +18,8 @@ class Soldier implements Observer {
     private levelWidth: number;
     public minWidth: number = 0;
 
+    private dieSound: Sound = new Audio('../docs/sounds/aargh0.ogg');
+
     constructor(parent: HTMLElement, position: number, levelWidth: number, atomBomb: Subject) {
         this.atomBomb = atomBomb;
         this.atomBomb.subscribe(this);
@@ -85,6 +87,7 @@ class Soldier implements Observer {
         if (this.healtBarWidth == 5) {
             console.log('outofHealth')
             this.remove();
+            this.dieSound.play();
             return true;
         }
         return false;
