@@ -239,4 +239,7 @@ This way is also used to move powerUps and check the collisition with the tank.
 
 ![alt text](/docs/img/UML_game.png)
 
+# Game components
+Used sounds for the music, firing a bullet, when the nuke hits the ground and when the soldier dies. 
 
+Used nice sprites for the characters and the tank. I also added some game control images in the starter interface.
