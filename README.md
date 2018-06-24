@@ -2,7 +2,7 @@
 Drive with left&right arrows. You can jump with up arrow. Switch between different jump modes with 'o' and 'p' keys.</del>
 
 # The game
-[Click to play the game](https://dafkas.github.io/typescript-game/)
+[Click to play the game](https://dafkas.github.io/typescript-game/docs)
 
 Use Arrows to drive left and right. Fire bullets or rockets with space bar and switch between them with O and P. Kill all the soldiers, but check out your gas and health, because the game is over if you're out of gas or health. Use the gas powerUp to refill the gass. 
 
