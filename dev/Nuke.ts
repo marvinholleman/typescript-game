@@ -6,8 +6,6 @@ class Nuke {
     private itemSpeedY: number = 2;
     private itemWidth: number = 40;
 
-    public tank: Tank;
-
     constructor(parent: HTMLElement) {
         this.nuke = document.createElement('nuke');
         parent.appendChild(this.nuke)

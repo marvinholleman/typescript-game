@@ -74,8 +74,6 @@ var Bullet = (function (_super) {
 var Level = (function () {
     function Level() {
         var _this = this;
-        this.itemPosY = 23;
-        this.itemSpeedY = 2;
         this.powerUps = [];
         this.nukes = [];
         this.soldiers = new Array();
@@ -165,6 +163,7 @@ var Level = (function () {
         while (this.level.hasChildNodes()) {
             this.level.removeChild(this.level.lastChild);
         }
+        alert('Game Over');
         this.level.remove();
         this.stoppedGame = true;
         new Game();
@@ -328,7 +327,6 @@ var Soldier = (function () {
         this.speed = 0;
         this.healtBarWidth = 40;
         this.speedX = 0.3;
-        this.speedY = 1;
         this.minWidth = 0;
         this.atomBomb = atomBomb;
         this.atomBomb.subscribe(this);

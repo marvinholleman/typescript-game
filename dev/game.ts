@@ -4,8 +4,8 @@ class Game {
 
     private static instance: Game;
 
-    public level: Level;
-    public soldier: Soldier;
+    private level: Level;
+    private soldier: Soldier;
     private gameStart: boolean = false;
     private startScreen: HTMLElement;
 

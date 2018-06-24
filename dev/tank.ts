@@ -4,39 +4,29 @@ class Tank implements Observer {
 
     private sprite: HTMLElement;
     private gasBar: HTMLElement;
-    public healthBar: HTMLElement;
+    private healthBar: HTMLElement;
 
     public gasBarWidth: number = 80;
     public healthBarWidth: number = 80;
 
-    private level: Level;
-    public bullet: Bullet;
-
-    public gasPowerUp: PowerUp;
-
     public positionX: number;
     public positionY: number;
-    public side: number;
+    private side: number;
     private velocityX: number = 0;
     private velocityY: number = 0;
     private maxVelocityYUp: number = -20;
     private maxVelocityYDown: number = 15;
-
     private minWidth: number = 0;
-
     private isMovingHorizontal: boolean = false;
-
     private frictionFactorX: number = 0.95;
     private gravity: number = 1;
-
     private forceX: number = 3;
-    private activeWeaponStrategy: WeaponStrategy
 
+    private activeWeaponStrategy: WeaponStrategy
     private rifle: Rifle;
     private rocketLauncher: RocketLauncher;
 
     public bullets: Array<Bullet> = [];
-
     public parent: HTMLElement;
     private levelWidth: number;
 

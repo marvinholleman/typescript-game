@@ -1,7 +1,7 @@
 class PowerUp {
 
-    public gasPowerUp: HTMLElement;
-    public itemPosX: number = Math.floor(Math.random() * 1000);
+    private gasPowerUp: HTMLElement;
+    private itemPosX: number = Math.floor(Math.random() * 1000);
     private itemPosY: number = 23;
     private itemSpeedY: number = 2;
     private itemWidth: number = 40;

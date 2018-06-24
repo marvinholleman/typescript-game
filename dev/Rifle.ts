@@ -1,11 +1,11 @@
 class Rifle implements WeaponStrategy {
     public tank: Tank;
-    public level: Level;
+    private level: Level;
 
     private parent: HTMLElement;
     private side: number;
 
-    public bulletCounter: number = 29;
+    private bulletCounter: number = 29;
 
     public bullets: Array<Bullet> = [];
 

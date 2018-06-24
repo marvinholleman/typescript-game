@@ -5,13 +5,13 @@ class Bullet extends AmmoObject {
     protected speedX: number = 4;
     protected speedY: number;
 
-    public posx: number;
+    private posx: number;
     protected side: number;
-    public tank: Tank;
+    private tank: Tank;
 
-    public posX: number;
-    public posY: number;
-    public parent: HTMLElement;
+    private posX: number;
+    private posY: number;
+    private parent: HTMLElement;
 
     public bullets: Array<Bullet> = [];
 

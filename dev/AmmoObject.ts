@@ -1,10 +1,10 @@
 class AmmoObject {
-    public div: HTMLElement;
-    public x: number;
-    public y: number;
+    protected div: HTMLElement;
+    protected x: number;
+    protected y: number;
 
-    public width: number;
-    public height: number;
+    protected width: number;
+    protected height: number;
 
     constructor(x: number, y: number, divName: string, width: number, height: number, parent: HTMLElement) {
         this.div = document.createElement(divName);

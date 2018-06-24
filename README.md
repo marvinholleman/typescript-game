@@ -20,4 +20,10 @@ I see al the OOP principles back in the game, except for the Observer pattern. I
 
 Link : https://github.com/jurrianlammerts/Spaceinvaders/issues/4
 
+# OO Principles
+
+# UML
+
+![alt text](/docs/img/UML_game.png)
+
 

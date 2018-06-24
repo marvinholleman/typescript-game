@@ -1,8 +1,6 @@
 class AtomBomb {
     observers: Observer[] = [];
-
     constructor() {
-
     }
 
     subscribe(c: Observer) {
@@ -10,7 +8,6 @@ class AtomBomb {
     }
 
     unsubscribe() {
-
     }
 
     sendMessage() {

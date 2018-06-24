@@ -1,28 +1,20 @@
 
 class Level {
-    public atomBomb: Subject;
+    private atomBomb: Subject;
+
     public width: number;
     public height: number;
     public level: HTMLElement;
-    public ground: HTMLElement;
+    private ground: HTMLElement;
     private tank: Tank;
-    private nuke: Nuke;
-
     private stoppedGame: boolean;
-
-    public game: Game;
-
-    public gasPowerUp: HTMLElement;
-    public itemPosX: number;
-    private itemPosY: number = 23;
-    private itemSpeedY: number = 2;
 
     public powerUps: Array<PowerUp> = [];
     public nukes: Array<Nuke> = [];
 
     public soldier: Soldier;
     private soldiers: Array<Soldier> = new Array<Soldier>();
-    public createSoldiers: number;
+    private createSoldiers: number;
     private soldierPositions: Array<number>
 
     public bullet: Bullet;
@@ -45,17 +37,14 @@ class Level {
         this.level.classList.add('level')
         document.body.appendChild(this.level)
         this.level.appendChild(this.ground)
-
         this.rockets = document.createElement('rocketCount');
         this.bullets = document.createElement('bulletCount');
         this.level.appendChild(this.rockets);
         this.level.appendChild(this.bullets);
-
         document.getElementsByTagName('bulletCount')[0].innerHTML = "Bullets 30";
         document.getElementsByTagName('rocketCount')[0].innerHTML = "Rockets 15";
         this.atomBomb = new AtomBomb()
         this.tank = new Tank(this.level, this.width, this.atomBomb);
-
         this.createSoldiers = setInterval(() => this.createSoldier(), 5000);
         this.soldierPositions = [0, this.width];
 
@@ -63,7 +52,7 @@ class Level {
         this.dropNuke();
     }
 
-    public createSoldier() {
+    private createSoldier() {
         this.soldierPositions.map((position) => {
             this.soldiers.push(new Soldier(this.level, position, this.width, this.atomBomb));
         });
@@ -126,6 +115,7 @@ class Level {
         while (this.level.hasChildNodes()) {
             this.level.removeChild(this.level.lastChild);
         }
+        alert('Game Over');
         this.level.remove();
         this.stoppedGame = true;
         new Game();

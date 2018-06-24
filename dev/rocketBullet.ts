@@ -8,7 +8,7 @@ class RocketBullet extends Bullet {
         console.log(this.width);
     }
 
-    move(maxWidth: number, maxHeight: number) {
+    public move(maxWidth: number, maxHeight: number) {
         this.x += this.speedX;
 
         if (this.side == -1) {
@@ -28,14 +28,12 @@ class RocketBullet extends Bullet {
         }
     }
 
-    hitsEnemy(soldier: Soldier): boolean {
+    public hitsEnemy(soldier: Soldier): boolean {
         this.width = 200;
         this.height = 50;
         return (this.x < soldier.x + soldier.width &&
             this.x + this.width > soldier.x &&
             this.y + this.height > soldier.y &&
             this.y < soldier.y + soldier.height);
-
-
     }
 }

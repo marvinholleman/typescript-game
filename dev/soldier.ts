@@ -12,13 +12,11 @@ class Soldier implements Observer {
     private side: number;
 
     private speedX: number = 0.3;
-    private speedY: number = 1;
 
     public width: number;
     public height: number;
     private levelWidth: number;
     public minWidth: number = 0;
-    private tank: Tank;
 
     constructor(parent: HTMLElement, position: number, levelWidth: number, atomBomb: Subject) {
         this.atomBomb = atomBomb;
@@ -41,7 +39,6 @@ class Soldier implements Observer {
         console.log('atom dropped on soldier');
         this.reduceHealth();
     }
-
 
     public startPosition(position: number) {
         this.x = position;
