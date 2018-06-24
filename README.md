@@ -21,8 +21,20 @@ I see al the OOP principles back in the game, except for the Observer pattern. I
 Link : https://github.com/jurrianlammerts/Spaceinvaders/issues/4
 
 # OO Principles
+## Singleton
+Used a singleton to initialize the game. If the instance is not existing, it will make an object or return the existing object.
 
-# UML
+<addr>
+    public static getInstance() {
+        if (!Game.instance)
+            Game.instance = new Game();
+        return Game.instance;
+    }
+</addr>
+## Observer
+## Strategy
+## Polymorphism
+# UML - Diagram
 
 ![alt text](/docs/img/UML_game.png)
 
