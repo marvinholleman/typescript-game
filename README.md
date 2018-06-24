@@ -1,5 +1,11 @@
-# Parallax car
-Drive with left&right arrows. You can jump with up arrow. Switch between different jump modes with 'o' and 'p' keys.
+<del># Parallax car
+Drive with left&right arrows. You can jump with up arrow. Switch between different jump modes with 'o' and 'p' keys.</del>
+
+# link: Play the game here!
+
+Use Arrows to drive left and right. Fire bullets or rockets with space bar and switch between them with O and P. Kill all the soldiers, but check out your gas and health, because the game is over if you're out of gas or health. Use the gas powerUp to refill the gass. 
+
+Sometimes the enemy fires a nuke and does some damage to everyone in the game. 
 
 # Pull request
 Configured basic project. Configs where not okay to clone successfully. Removed Package.json and Webpack.config.js from Gitignore file. Made a new Webpack file to build the files & added package.json file so the node modules could be installed.
