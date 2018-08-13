@@ -23,6 +23,7 @@ class Tank implements Observer {
     private forceX: number = 3;
 
     private activeWeaponStrategy: WeaponStrategy
+
     private rifle: Rifle;
     private rocketLauncher: RocketLauncher;
 

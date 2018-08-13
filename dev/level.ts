@@ -7,7 +7,7 @@ class Level {
     public level: HTMLElement;
     private ground: HTMLElement;
     private tank: Tank;
-    private stoppedGame: boolean;
+    public stoppedGame: boolean;
 
     public powerUps: Array<PowerUp> = [];
     public nukes: Array<Nuke> = [];
@@ -64,8 +64,9 @@ class Level {
         if (this.stoppedGame) {
             return;
         } else {
-            console.log(this.bulletCount);
-            if (this.tank.healthBarWidth < 5 || this.tank.gasBarWidth < 5 || this.bulletCount < 1 || this.rocketCount < 1) this.gameOver();
+            if (this.tank.healthBarWidth < 5) this.gameOver(' OUT OF HEALTH')
+            else if (this.tank.gasBarWidth < 5) this.gameOver(' OUT OF GAS')
+
             this.tank.update(this.width);
             this.nukes.forEach((nuke, n) => {
                 nuke.move();
@@ -112,13 +113,15 @@ class Level {
         }, 20000);
     }
 
-    public gameOver() {
+    public gameOver(message: String) {
         while (this.level.hasChildNodes()) {
             this.level.removeChild(this.level.lastChild);
         }
-        alert('Game Over');
+        alert('GAME OVER,' + message);
         this.level.remove();
         this.stoppedGame = true;
-        new Game();
+
+        Game.getInstance();
+        location.reload();
     }
 }

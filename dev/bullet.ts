@@ -1,6 +1,6 @@
-/// <reference path="AmmoObject.ts"/>
+/// <reference path="GameObject.ts"/>
 
-class Bullet extends AmmoObject {
+class Bullet extends GameObject {
 
     protected speedX: number = 4;
     protected speedY: number;

@@ -18,9 +18,9 @@ class RocketLauncher implements WeaponStrategy {
         this.tank.bullets.push(new RocketBullet(this.tank.positionX, this.tank.positionY, this.parent, side, this.tank))
         document.getElementsByTagName('rocketCount')[0].innerHTML = "Rockets " + this.rocketBulletCounter--;
         if (this.rocketBulletCounter < 0) {
-            console.log('out of bullets');
-            alert('GAME OVER');
+            alert('GAME OVER, OUT OF ROCKETS');
             location.reload();
+            Game.getInstance()
         }
     }
 }

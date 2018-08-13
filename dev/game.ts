@@ -2,9 +2,9 @@
 
 class Game {
 
-    private static instance: Game;
+    public static instance: Game;
 
-    private level: Level;
+    public level: Level;
     private soldier: Soldier;
     private gameStart: boolean = false;
     private startScreen: HTMLElement;
@@ -28,6 +28,7 @@ class Game {
     }
 
     public static getInstance() {
+        console.log(Game.instance)
         if (!Game.instance)
             Game.instance = new Game();
         return Game.instance;
@@ -42,7 +43,5 @@ class Game {
         this.startScreen.remove();
     }
 }
-
-
 
 window.addEventListener("load", () => Game.getInstance());

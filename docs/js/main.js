@@ -9,21 +9,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var AmmoObject = (function () {
-    function AmmoObject(x, y, divName, width, height, parent) {
-        this.div = document.createElement(divName);
-        parent.appendChild(this.div);
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
-    }
-    AmmoObject.prototype.remove = function () {
-        this.div.remove();
-    };
-    return AmmoObject;
-}());
 var AtomBomb = (function () {
     function AtomBomb() {
         this.observers = [];
@@ -40,6 +25,21 @@ var AtomBomb = (function () {
         }
     };
     return AtomBomb;
+}());
+var GameObject = (function () {
+    function GameObject(x, y, divName, width, height, parent) {
+        this.div = document.createElement(divName);
+        parent.appendChild(this.div);
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+    }
+    GameObject.prototype.remove = function () {
+        this.div.remove();
+    };
+    return GameObject;
 }());
 var Bullet = (function (_super) {
     __extends(Bullet, _super);
@@ -70,7 +70,7 @@ var Bullet = (function (_super) {
             this.y < soldier.y + soldier.height);
     };
     return Bullet;
-}(AmmoObject));
+}(GameObject));
 var Level = (function () {
     function Level() {
         var _this = this;
@@ -112,9 +112,10 @@ var Level = (function () {
             return;
         }
         else {
-            console.log(this.bulletCount);
-            if (this.tank.healthBarWidth < 5 || this.tank.gasBarWidth < 5 || this.bulletCount < 1 || this.rocketCount < 1)
-                this.gameOver();
+            if (this.tank.healthBarWidth < 5)
+                this.gameOver(' OUT OF HEALTH');
+            else if (this.tank.gasBarWidth < 5)
+                this.gameOver(' OUT OF GAS');
             this.tank.update(this.width);
             this.nukes.forEach(function (nuke, n) {
                 nuke.move();
@@ -160,14 +161,15 @@ var Level = (function () {
             _this.nukes.push(new Nuke(_this.level));
         }, 20000);
     };
-    Level.prototype.gameOver = function () {
+    Level.prototype.gameOver = function (message) {
         while (this.level.hasChildNodes()) {
             this.level.removeChild(this.level.lastChild);
         }
-        alert('Game Over');
+        alert('GAME OVER,' + message);
         this.level.remove();
         this.stoppedGame = true;
-        new Game();
+        Game.getInstance();
+        location.reload();
     };
     return Level;
 }());
@@ -191,6 +193,7 @@ var Game = (function () {
         };
     }
     Game.getInstance = function () {
+        console.log(Game.instance);
         if (!Game.instance)
             Game.instance = new Game();
         return Game.instance;
@@ -273,8 +276,9 @@ var Rifle = (function () {
         document.getElementsByTagName('bulletCount')[0].innerHTML = "Bullets " + this.bulletCounter--;
         this.fireSound.play();
         if (this.bulletCounter < 0) {
-            alert('GAME OVER');
+            alert('GAME OVER, OUT OF BULLETS');
             location.reload();
+            Game.getInstance();
         }
     };
     return Rifle;
@@ -329,9 +333,9 @@ var RocketLauncher = (function () {
         this.tank.bullets.push(new RocketBullet(this.tank.positionX, this.tank.positionY, this.parent, side, this.tank));
         document.getElementsByTagName('rocketCount')[0].innerHTML = "Rockets " + this.rocketBulletCounter--;
         if (this.rocketBulletCounter < 0) {
-            console.log('out of bullets');
-            alert('GAME OVER');
+            alert('GAME OVER, OUT OF ROCKETS');
             location.reload();
+            Game.getInstance();
         }
     };
     return RocketLauncher;

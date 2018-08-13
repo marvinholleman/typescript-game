@@ -22,8 +22,9 @@ class Rifle implements WeaponStrategy {
         document.getElementsByTagName('bulletCount')[0].innerHTML = "Bullets " + this.bulletCounter--;
         this.fireSound.play();
         if (this.bulletCounter < 0) {
-            alert('GAME OVER');
+            alert('GAME OVER, OUT OF BULLETS');
             location.reload();
+            Game.getInstance()
         }
     }
 }
