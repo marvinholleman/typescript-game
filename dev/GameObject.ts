@@ -14,7 +14,6 @@ class GameObject {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
     }
 
     public remove(): void {

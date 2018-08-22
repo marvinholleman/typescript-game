@@ -1,7 +1,7 @@
-class Nuke {
+class Nuke extends GameObject {
 
     public nuke: HTMLElement;
-    public itemPosX: number;
+    public itemPosX: number = window.innerWidth / 2;
     private itemPosY: number = -400;
     private itemSpeedY: number = 2;
     private itemWidth: number = 40;
@@ -9,15 +9,17 @@ class Nuke {
     private explosion: Sound;
 
     constructor(parent: HTMLElement) {
-        this.nuke = document.createElement('nuke');
-        parent.appendChild(this.nuke)
+        super(window.innerWidth / 2, -400, 'nuke', 40, 5, parent);
 
-        this.itemPosX = window.innerWidth / 2;
+        // this.nuke = document.createElement('nuke');
+        // parent.appendChild(this.nuke)
+        // this.itemPosX = window.innerWidth / 2;
+        // this.move()
     }
 
     public move() {
         this.itemPosY += this.itemSpeedY;
-        this.nuke.style.transform = `translate(${this.itemPosX}px, ${this.itemPosY}px)`;
+        this.div.style.transform = "translate(" + this.itemPosX + "px, " + this.itemPosY + "px)";
     }
 
     public hitsGround(height: number): boolean {
@@ -32,6 +34,6 @@ class Nuke {
     }
 
     public remove() {
-        this.nuke.remove();
+        this.div.remove();
     }
 }

@@ -1,4 +1,4 @@
-class Soldier implements Observer {
+class Soldier extends GameObject implements Observer {
     private atomBomb: Subject;
 
     private speed: number = 0;
@@ -21,12 +21,13 @@ class Soldier implements Observer {
     private dieSound: Sound = new Audio('../docs/sounds/aargh0.ogg');
 
     constructor(parent: HTMLElement, position: number, levelWidth: number, atomBomb: Subject) {
+        super(Math.round(Math.random() * 5) * 120, Math.floor(Math.random() * 20), 'soldier', 20, 30, parent);
         this.atomBomb = atomBomb;
         this.atomBomb.subscribe(this);
-        this.soldier = document.createElement("soldier");
+        //this.soldier = document.createElement("soldier");
         this.healthBar = document.createElement("soldierHealthBar")
-        parent.appendChild(this.soldier);
-        this.soldier.appendChild(this.healthBar);
+        //parent.appendChild(this.soldier);
+        this.div.appendChild(this.healthBar);
         this.width = 20;
         this.height = 30;
         this.side = 1;
@@ -63,7 +64,7 @@ class Soldier implements Observer {
         } if (this.x > window.innerWidth || this.x < -10) {
             this.speedX *= -1;
         }
-        this.soldier.style.transform = `translate(${this.x}px, ${this.y}px) scaleX(${this.side})`
+        this.div.style.transform = `translate(${this.x}px, ${this.y}px) scaleX(${this.side})`
     }
 
     public hitsTank(tank: Tank) {
@@ -75,7 +76,7 @@ class Soldier implements Observer {
     }
 
     public remove(): void {
-        this.soldier.remove();
+        this.div.remove();
     }
 
     public reduceHealth() {

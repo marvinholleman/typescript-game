@@ -104,7 +104,7 @@ class Level {
     private dropItems() {
         setInterval(() => {
             this.powerUps.push(new PowerUp(this.level));
-        }, 50000);
+        }, 25000);
     }
 
     private dropNuke() {
@@ -122,6 +122,6 @@ class Level {
         this.stoppedGame = true;
 
         Game.getInstance();
-        location.reload();
+        //location.reload();
     }
 }

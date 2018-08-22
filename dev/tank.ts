@@ -1,4 +1,4 @@
-class Tank implements Observer {
+class Tank extends GameObject implements Observer {
 
     public atomBomb: Subject;
 
@@ -34,10 +34,12 @@ class Tank implements Observer {
     public showAmmo: boolean = false;
 
     constructor(parent: HTMLElement, levelWidth: number, atomBomb: Subject) {
+        super(levelWidth / 2, 200, 'tank', 5, 5, parent);
+
         this.atomBomb = atomBomb;
         this.atomBomb.subscribe(this);
 
-        this.sprite = document.createElement("tank");
+        // this.sprite = document.createElement("tank");
         this.gasBar = document.createElement("gasBar")
         this.healthBar = document.createElement("healthBar")
         this.levelWidth = levelWidth;
@@ -45,11 +47,11 @@ class Tank implements Observer {
         this.positionY = 200;
         this.side = 1;
         this.parent = parent;
-        this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px)";
-        parent.appendChild(this.sprite);
-        this.sprite.appendChild(this.gasBar);
-        this.sprite.appendChild(this.healthBar);
-        this.sprite.classList.add('tank')
+        this.div.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px)";
+        //parent.appendChild(this.sprite);
+        this.div.appendChild(this.gasBar);
+        this.div.appendChild(this.healthBar);
+        this.div.classList.add('tank')
         setInterval(() => {
             if (this.gasBarWidth > 1) {
                 console.log('mined')
@@ -141,7 +143,7 @@ class Tank implements Observer {
             this.positionY = 0;
         }
 
-        this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px) scaleX(" + this.side + ") ";
+        this.div.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px) scaleX(" + this.side + ") ";
     }
 
     // Make sure y velocity doesn't get too big.

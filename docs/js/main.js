@@ -34,7 +34,6 @@ var GameObject = (function () {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
     }
     GameObject.prototype.remove = function () {
         this.div.remove();
@@ -153,7 +152,7 @@ var Level = (function () {
         var _this = this;
         setInterval(function () {
             _this.powerUps.push(new PowerUp(_this.level));
-        }, 50000);
+        }, 25000);
     };
     Level.prototype.dropNuke = function () {
         var _this = this;
@@ -169,7 +168,6 @@ var Level = (function () {
         this.level.remove();
         this.stoppedGame = true;
         Game.getInstance();
-        location.reload();
     };
     return Level;
 }());
@@ -209,18 +207,19 @@ var Game = (function () {
     return Game;
 }());
 window.addEventListener("load", function () { return Game.getInstance(); });
-var Nuke = (function () {
+var Nuke = (function (_super) {
+    __extends(Nuke, _super);
     function Nuke(parent) {
-        this.itemPosY = -400;
-        this.itemSpeedY = 2;
-        this.itemWidth = 40;
-        this.nuke = document.createElement('nuke');
-        parent.appendChild(this.nuke);
-        this.itemPosX = window.innerWidth / 2;
+        var _this = _super.call(this, window.innerWidth / 2, -400, 'nuke', 40, 5, parent) || this;
+        _this.itemPosX = window.innerWidth / 2;
+        _this.itemPosY = -400;
+        _this.itemSpeedY = 2;
+        _this.itemWidth = 40;
+        return _this;
     }
     Nuke.prototype.move = function () {
         this.itemPosY += this.itemSpeedY;
-        this.nuke.style.transform = "translate(" + this.itemPosX + "px, " + this.itemPosY + "px)";
+        this.div.style.transform = "translate(" + this.itemPosX + "px, " + this.itemPosY + "px)";
     };
     Nuke.prototype.hitsGround = function (height) {
         this.explosion = new Audio('../docs/sounds/DeathFlash.flac');
@@ -232,25 +231,26 @@ var Nuke = (function () {
         return false;
     };
     Nuke.prototype.remove = function () {
-        this.nuke.remove();
+        this.div.remove();
     };
     return Nuke;
-}());
-var PowerUp = (function () {
+}(GameObject));
+var PowerUp = (function (_super) {
+    __extends(PowerUp, _super);
     function PowerUp(parent) {
-        this.itemPosX = Math.floor(Math.random() * 1000);
-        this.itemPosY = 23;
-        this.itemSpeedY = 2;
-        this.itemWidth = 40;
-        this.gasPowerUp = document.createElement('gasPowerUp');
-        parent.appendChild(this.gasPowerUp);
+        var _this = _super.call(this, Math.floor(Math.random() * 1000), 23, 'gasPowerUp', 40, 5, parent) || this;
+        _this.itemPosX = Math.floor(Math.random() * 1000);
+        _this.itemPosY = 23;
+        _this.itemSpeedY = 2;
+        _this.itemWidth = 40;
+        return _this;
     }
     PowerUp.prototype.move = function (height) {
         this.itemPosY += this.itemSpeedY;
         if (this.itemPosY > height - 90) {
             this.itemPosY = height - 90;
         }
-        this.gasPowerUp.style.transform = "translate(" + this.itemPosX + "px, " + this.itemPosY + "px)";
+        this.div.style.transform = "translate(" + this.itemPosX + "px, " + this.itemPosY + "px)";
     };
     PowerUp.prototype.hitsTank = function (tankPositionX) {
         tankPositionX = Math.round(tankPositionX);
@@ -258,10 +258,10 @@ var PowerUp = (function () {
             tankPositionX + this.itemWidth > this.itemPosX);
     };
     PowerUp.prototype.remove = function () {
-        this.gasPowerUp.remove();
+        this.div.remove();
     };
     return PowerUp;
-}());
+}(GameObject));
 var Rifle = (function () {
     function Rifle(tank, parent, side) {
         this.bulletCounter = 29;
@@ -340,27 +340,28 @@ var RocketLauncher = (function () {
     };
     return RocketLauncher;
 }());
-var Soldier = (function () {
+var Soldier = (function (_super) {
+    __extends(Soldier, _super);
     function Soldier(parent, position, levelWidth, atomBomb) {
-        this.speed = 0;
-        this.healtBarWidth = 40;
-        this.speedX = 0.3;
-        this.minWidth = 0;
-        this.dieSound = new Audio('../docs/sounds/aargh0.ogg');
-        this.atomBomb = atomBomb;
-        this.atomBomb.subscribe(this);
-        this.soldier = document.createElement("soldier");
-        this.healthBar = document.createElement("soldierHealthBar");
-        parent.appendChild(this.soldier);
-        this.soldier.appendChild(this.healthBar);
-        this.width = 20;
-        this.height = 30;
-        this.side = 1;
-        this.x = Math.round(Math.random() * 5) * 120;
-        this.levelWidth = levelWidth;
-        this.y = Math.floor(Math.random() * 20);
-        this.speed = -1;
-        this.startPosition(position);
+        var _this = _super.call(this, Math.round(Math.random() * 5) * 120, Math.floor(Math.random() * 20), 'soldier', 20, 30, parent) || this;
+        _this.speed = 0;
+        _this.healtBarWidth = 40;
+        _this.speedX = 0.3;
+        _this.minWidth = 0;
+        _this.dieSound = new Audio('../docs/sounds/aargh0.ogg');
+        _this.atomBomb = atomBomb;
+        _this.atomBomb.subscribe(_this);
+        _this.healthBar = document.createElement("soldierHealthBar");
+        _this.div.appendChild(_this.healthBar);
+        _this.width = 20;
+        _this.height = 30;
+        _this.side = 1;
+        _this.x = Math.round(Math.random() * 5) * 120;
+        _this.levelWidth = levelWidth;
+        _this.y = Math.floor(Math.random() * 20);
+        _this.speed = -1;
+        _this.startPosition(position);
+        return _this;
     }
     Soldier.prototype.notify = function (p) {
         console.log('atom dropped on soldier');
@@ -389,7 +390,7 @@ var Soldier = (function () {
         if (this.x > window.innerWidth || this.x < -10) {
             this.speedX *= -1;
         }
-        this.soldier.style.transform = "translate(" + this.x + "px, " + this.y + "px) scaleX(" + this.side + ")";
+        this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px) scaleX(" + this.side + ")";
     };
     Soldier.prototype.hitsTank = function (tank) {
         if (tank.positionX < this.x + this.width &&
@@ -399,7 +400,7 @@ var Soldier = (function () {
         }
     };
     Soldier.prototype.remove = function () {
-        this.soldier.remove();
+        this.div.remove();
     };
     Soldier.prototype.reduceHealth = function () {
         this.healtBarWidth = this.healtBarWidth / 2;
@@ -415,38 +416,37 @@ var Soldier = (function () {
         return false;
     };
     return Soldier;
-}());
-var Tank = (function () {
+}(GameObject));
+var Tank = (function (_super) {
+    __extends(Tank, _super);
     function Tank(parent, levelWidth, atomBomb) {
-        var _this = this;
-        this.gasBarWidth = 80;
-        this.healthBarWidth = 80;
-        this.velocityX = 0;
-        this.velocityY = 0;
-        this.maxVelocityYUp = -20;
-        this.maxVelocityYDown = 15;
-        this.minWidth = 0;
-        this.isMovingHorizontal = false;
-        this.frictionFactorX = 0.95;
-        this.gravity = 1;
-        this.forceX = 3;
-        this.bullets = [];
-        this.showAmmo = false;
-        this.atomBomb = atomBomb;
-        this.atomBomb.subscribe(this);
-        this.sprite = document.createElement("tank");
-        this.gasBar = document.createElement("gasBar");
-        this.healthBar = document.createElement("healthBar");
-        this.levelWidth = levelWidth;
-        this.positionX = levelWidth / 2;
-        this.positionY = 200;
-        this.side = 1;
-        this.parent = parent;
-        this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px)";
-        parent.appendChild(this.sprite);
-        this.sprite.appendChild(this.gasBar);
-        this.sprite.appendChild(this.healthBar);
-        this.sprite.classList.add('tank');
+        var _this = _super.call(this, levelWidth / 2, 200, 'tank', 5, 5, parent) || this;
+        _this.gasBarWidth = 80;
+        _this.healthBarWidth = 80;
+        _this.velocityX = 0;
+        _this.velocityY = 0;
+        _this.maxVelocityYUp = -20;
+        _this.maxVelocityYDown = 15;
+        _this.minWidth = 0;
+        _this.isMovingHorizontal = false;
+        _this.frictionFactorX = 0.95;
+        _this.gravity = 1;
+        _this.forceX = 3;
+        _this.bullets = [];
+        _this.showAmmo = false;
+        _this.atomBomb = atomBomb;
+        _this.atomBomb.subscribe(_this);
+        _this.gasBar = document.createElement("gasBar");
+        _this.healthBar = document.createElement("healthBar");
+        _this.levelWidth = levelWidth;
+        _this.positionX = levelWidth / 2;
+        _this.positionY = 200;
+        _this.side = 1;
+        _this.parent = parent;
+        _this.div.style.transform = "translate(" + _this.positionX + "px, " + _this.positionY + "px)";
+        _this.div.appendChild(_this.gasBar);
+        _this.div.appendChild(_this.healthBar);
+        _this.div.classList.add('tank');
         setInterval(function () {
             if (_this.gasBarWidth > 1) {
                 console.log('mined');
@@ -454,9 +454,9 @@ var Tank = (function () {
                 _this.gasBar.style.width = _this.gasBarWidth + 'px';
             }
         }, 1000);
-        this.rifle = new Rifle(this, this.parent, this.side);
-        this.rocketLauncher = new RocketLauncher(this, this.parent, this.side);
-        this.activeWeaponStrategy = this.rifle;
+        _this.rifle = new Rifle(_this, _this.parent, _this.side);
+        _this.rocketLauncher = new RocketLauncher(_this, _this.parent, _this.side);
+        _this.activeWeaponStrategy = _this.rifle;
         document.addEventListener("keydown", function (e) {
             switch (e.keyCode) {
                 case 37:
@@ -490,6 +490,7 @@ var Tank = (function () {
                     break;
             }
         });
+        return _this;
     }
     Tank.prototype.notify = function (p) {
         this.reduceHealth(1.2);
@@ -518,7 +519,7 @@ var Tank = (function () {
         if (this.positionY > 0) {
             this.positionY = 0;
         }
-        this.sprite.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px) scaleX(" + this.side + ") ";
+        this.div.style.transform = "translate(" + this.positionX + "px, " + this.positionY + "px) scaleX(" + this.side + ") ";
     };
     Tank.prototype.capVelocityY = function () {
         if (this.velocityY < this.maxVelocityYUp) {
@@ -538,5 +539,5 @@ var Tank = (function () {
         this.healthBar.style.width = this.healthBarWidth + 'px';
     };
     return Tank;
-}());
+}(GameObject));
 //# sourceMappingURL=main.js.map

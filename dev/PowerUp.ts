@@ -1,4 +1,4 @@
-class PowerUp {
+class PowerUp extends GameObject {
 
     private gasPowerUp: HTMLElement;
     private itemPosX: number = Math.floor(Math.random() * 1000);
@@ -9,8 +9,10 @@ class PowerUp {
     public tank: Tank;
 
     constructor(parent: HTMLElement) {
-        this.gasPowerUp = document.createElement('gasPowerUp');
-        parent.appendChild(this.gasPowerUp)
+        super(Math.floor(Math.random() * 1000), 23, 'gasPowerUp', 40, 5, parent);
+
+        // this.gasPowerUp = document.createElement('gasPowerUp');
+        // parent.appendChild(this.gasPowerUp)
     }
 
     public move(height: number) {
@@ -18,7 +20,7 @@ class PowerUp {
         if (this.itemPosY > height - 90) {
             this.itemPosY = height - 90;
         }
-        this.gasPowerUp.style.transform = `translate(${this.itemPosX}px, ${this.itemPosY}px)`;
+        this.div.style.transform = `translate(${this.itemPosX}px, ${this.itemPosY}px)`;
     }
 
     public hitsTank(tankPositionX: number): boolean {
@@ -29,6 +31,6 @@ class PowerUp {
     }
 
     public remove() {
-        this.gasPowerUp.remove();
+        this.div.remove();
     }
 }
