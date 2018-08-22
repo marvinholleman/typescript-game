@@ -14,7 +14,7 @@ class Game {
     constructor() {
         this.startScreen = document.createElement('startScreen');
         document.body.appendChild(this.startScreen);
-        this.startScreen.innerHTML = '<p class="start-text">Press any key to start game</p><p class="control-text">Use arrow keys to drive<br/><img class="key" src="../docs/img/arrows.png"/><br/>Switch between weapons with O & P <br/> & <br/>Fire with space<br/><img class="key-p" src="../docs/img/p-o.png""/><br/><img class="space-key" src="../docs/img/space-key.png""/>';
+        this.startScreen.innerHTML = '<p class="start-text">Press any key to start game</p><p class="control-text">Use arrow keys to drive<br/><div class="key"></div><br/>Switch between weapons with O & P <br/> & <br/>Fire with space<br/><div class="key-p"></div><br/><div class="space-key" ></div>';
         document.onkeypress = (e) => {
             if (!this.gameStart) {
                 this.level = new Level();

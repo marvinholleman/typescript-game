@@ -161,15 +161,24 @@ ground{
 
 .key{
     width: 19%;
-    height: 24%;
+    height: 5000px;
+    background-image: url(../img/arrows.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
 }
 .key-p{
     width: 13%;
-    height: 14.5%;
+    height: 334.5%;
+    background-image: url(../img/p-o.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
 }
 .space-key{
-    width: 24%;
-    height: 12%;
+    width: 30%;
+    height: 272%;
+    background-image: url(../img/space-key.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
 }
 
 .start-text{
