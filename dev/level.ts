@@ -12,6 +12,8 @@ class Level {
     public powerUps: Array<PowerUp> = [];
     public nukes: Array<Nuke> = [];
 
+    public gameObjects: Array<GameObject> = [];
+
     public soldier: Soldier;
     private soldiers: Array<Soldier> = new Array<Soldier>();
     private createSoldiers: number;
@@ -54,7 +56,7 @@ class Level {
 
     private createSoldier() {
         this.soldierPositions.map((position) => {
-            this.soldiers.push(new Soldier(this.level, position, this.width, this.atomBomb));
+            this.gameObjects.push(new Soldier(this.level, position, this.width, this.atomBomb));
         });
         if (this.soldiers.length > 100) clearInterval(this.createSoldiers);
     }
@@ -68,8 +70,15 @@ class Level {
             else if (this.tank.gasBarWidth < 5) this.gameOver(' OUT OF GAS')
 
             this.tank.update(this.width);
+
+            console.log(this.gameObjects);
+            this.gameObjects.forEach((object, g) => {
+                object.move();
+            });
+
+            console.log();
             this.nukes.forEach((nuke, n) => {
-                nuke.move();
+                //nuke.move();
                 if (nuke.hitsGround(this.height)) {
                     this.atomBomb.sendMessage();
                     this.nukes.splice(n, 1)
@@ -78,7 +87,7 @@ class Level {
             });
             this.soldiers.forEach(Soldier => Soldier.move());
             this.powerUps.forEach((powerUp, p) => {
-                powerUp.move(this.height);
+                //powerUp.move(this.height);
                 if (powerUp.hitsTank(this.tank.positionX)) {
                     this.tank.refillGas();
                     this.powerUps.splice(p, 1)
@@ -103,13 +112,15 @@ class Level {
 
     private dropItems() {
         setInterval(() => {
-            this.powerUps.push(new PowerUp(this.level));
+            this.gameObjects.push(new PowerUp(this.level))
+            // this.powerUps.push(new PowerUp(this.level));
         }, 25000);
     }
 
     private dropNuke() {
         setInterval(() => {
-            this.nukes.push(new Nuke(this.level));
+            this.gameObjects.push(new Nuke(this.level));
+            // this.nukes.push(new Nuke(this.level));
         }, 20000);
     }
 
@@ -122,6 +133,8 @@ class Level {
         this.stoppedGame = true;
 
         Game.getInstance();
-        //location.reload();
+
+
+        // location.reload();
     }
 }

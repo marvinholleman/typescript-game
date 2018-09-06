@@ -15,10 +15,10 @@ class PowerUp extends GameObject {
         // parent.appendChild(this.gasPowerUp)
     }
 
-    public move(height: number) {
+    public move() {
         this.itemPosY += this.itemSpeedY;
-        if (this.itemPosY > height - 90) {
-            this.itemPosY = height - 90;
+        if (this.itemPosY > self.innerHeight - 90) {
+            this.itemPosY = self.innerHeight - 90;
         }
         this.div.style.transform = `translate(${this.itemPosX}px, ${this.itemPosY}px)`;
     }

@@ -38,6 +38,13 @@ var GameObject = (function () {
     GameObject.prototype.remove = function () {
         this.div.remove();
     };
+    GameObject.prototype.move = function () {
+        this.y += 2;
+        if (this.y > self.innerHeight - 90) {
+            this.y = self.innerHeight - 90;
+        }
+        this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+    };
     return GameObject;
 }());
 var Bullet = (function (_super) {
@@ -75,6 +82,7 @@ var Level = (function () {
         var _this = this;
         this.powerUps = [];
         this.nukes = [];
+        this.gameObjects = [];
         this.soldiers = new Array();
         this.bulletCount = 30;
         this.width = self.innerWidth - 110;
@@ -100,7 +108,7 @@ var Level = (function () {
     Level.prototype.createSoldier = function () {
         var _this = this;
         this.soldierPositions.map(function (position) {
-            _this.soldiers.push(new Soldier(_this.level, position, _this.width, _this.atomBomb));
+            _this.gameObjects.push(new Soldier(_this.level, position, _this.width, _this.atomBomb));
         });
         if (this.soldiers.length > 100)
             clearInterval(this.createSoldiers);
@@ -116,8 +124,12 @@ var Level = (function () {
             else if (this.tank.gasBarWidth < 5)
                 this.gameOver(' OUT OF GAS');
             this.tank.update(this.width);
+            console.log(this.gameObjects);
+            this.gameObjects.forEach(function (object, g) {
+                object.move();
+            });
+            console.log();
             this.nukes.forEach(function (nuke, n) {
-                nuke.move();
                 if (nuke.hitsGround(_this.height)) {
                     _this.atomBomb.sendMessage();
                     _this.nukes.splice(n, 1);
@@ -125,7 +137,6 @@ var Level = (function () {
             });
             this.soldiers.forEach(function (Soldier) { return Soldier.move(); });
             this.powerUps.forEach(function (powerUp, p) {
-                powerUp.move(_this.height);
                 if (powerUp.hitsTank(_this.tank.positionX)) {
                     _this.tank.refillGas();
                     _this.powerUps.splice(p, 1);
@@ -151,13 +162,13 @@ var Level = (function () {
     Level.prototype.dropItems = function () {
         var _this = this;
         setInterval(function () {
-            _this.powerUps.push(new PowerUp(_this.level));
+            _this.gameObjects.push(new PowerUp(_this.level));
         }, 25000);
     };
     Level.prototype.dropNuke = function () {
         var _this = this;
         setInterval(function () {
-            _this.nukes.push(new Nuke(_this.level));
+            _this.gameObjects.push(new Nuke(_this.level));
         }, 20000);
     };
     Level.prototype.gameOver = function (message) {
@@ -245,10 +256,10 @@ var PowerUp = (function (_super) {
         _this.itemWidth = 40;
         return _this;
     }
-    PowerUp.prototype.move = function (height) {
+    PowerUp.prototype.move = function () {
         this.itemPosY += this.itemSpeedY;
-        if (this.itemPosY > height - 90) {
-            this.itemPosY = height - 90;
+        if (this.itemPosY > self.innerHeight - 90) {
+            this.itemPosY = self.innerHeight - 90;
         }
         this.div.style.transform = "translate(" + this.itemPosX + "px, " + this.itemPosY + "px)";
     };

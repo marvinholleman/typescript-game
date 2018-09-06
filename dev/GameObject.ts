@@ -19,4 +19,14 @@ class GameObject {
     public remove(): void {
         this.div.remove();
     }
+
+    public move() {
+        // this.itemPosY += this.itemSpeedY;
+        this.y += 2;
+        if (this.y > self.innerHeight - 90) {
+            this.y = self.innerHeight - 90;
+        }
+
+        this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+    }
 }
